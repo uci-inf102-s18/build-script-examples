@@ -3,7 +3,7 @@
 import subprocess
 
 # variables
-executables = ["main.go"]
+executables = ["Main.go"]
 compiler = 'go'
 
 # build command
