@@ -37,7 +37,7 @@ cmd.append(text_location)
 output = None
 print('-------{}----------'.format(executable))
 
-output = subprocess.check_output([interpreter,  executable, text_location]).splitlines()
+output = subprocess.check_output(cmd).splitlines()
 
 solution = ""
 with open (solution_loc, "r") as f:
