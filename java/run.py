@@ -4,8 +4,12 @@ import subprocess
 import os
 
 # Variables
-exe = 'Main'
+executable = 'Main'
 interpreter = 'java'
+## Add class path
+classpath_flag = ['-classpath', '.']
+## Default value should be 1024k, increase the value below to your needed value.
+stacksize_flag = '1024k'
 text_file = 'pride-and-prejudice.txt'
 solution_file = 'pride-and-prejudice-solution.txt'
 
@@ -13,19 +17,27 @@ solution_file = 'pride-and-prejudice-solution.txt'
 working_dir = os.getcwd()
 test_files_location = os.path.join(working_dir, os.pardir)
 
-text_loc = os.path.join(test_files_location, text_file)
+text_location = os.path.join(test_files_location, text_file)
 solution_loc = os.path.join(test_files_location, solution_file)
+
+# Setup command
+cmd = [interpreter]
+## check if flags were defined and if so add them.
+try:
+	cmd.extend(classpath_flag)
+	cmd.append('-Xss{}'.format(stacksize_flag))
+except NameError:
+	print("One or more flags were not defined, but continue...")
+	pass
+
+cmd.append(executable)
+cmd.append(text_location)
 
 # Run program
 output = None
-print('-------{}----------'.format(exe))
+print('-------{}----------'.format(executable))
 
-if interpreter == '':
-	file_path = os.path.join(working_dir, exe)
-	output = subprocess.check_output([file_path, text_loc]).splitlines()
-else:
-	file_path = exe
-	output = subprocess.check_output([interpreter, '-classpath', '.', file_path, text_loc]).splitlines()
+output = subprocess.check_output([interpreter,  executable, text_location]).splitlines()
 
 solution = ""
 with open (solution_loc, "r") as f:
